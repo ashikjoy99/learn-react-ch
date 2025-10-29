@@ -28,6 +28,17 @@ function App() {
             },
           ]}
         />
+        <Column
+          title="Completed"
+          items={[
+            {
+              id: "2",
+              title: "Working on UI",
+              status: "in-progress",
+              isEditing: false,
+            },
+          ]}
+        />
       </div>
     </div>
   );

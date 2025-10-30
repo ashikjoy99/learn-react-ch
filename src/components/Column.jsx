@@ -2,8 +2,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { TaskItem } from "./TaskItem";
+import { useState } from "react";
 
-export function Column({ title, items }) {
+export function Column({ title, items, onAddItem }) {
+  const [inputValue, setInputValue] = useState("");
+
+  const addTodo = () => {
+    if (inputValue.trim() === "") return;
+
+    onAddItem({
+      id: Date.now().toString(),
+      title: inputValue,
+      status: title.toLowerCase().replace(" ", "-"),
+      isEditing: false,
+    });
+
+    setInputValue("");
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -14,8 +30,9 @@ export function Column({ title, items }) {
           <Input placeholder="Search" />
         </div>
         <div className="flex gap-2 mb-4">
-          <Input placeholder="Add item" />
-          <Button>Add</Button>
+          <Input  value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)} placeholder="Add item" />
+          <Button onClick={addTodo}>Add</Button>
         </div>
 
         <ul className="space-y-2">

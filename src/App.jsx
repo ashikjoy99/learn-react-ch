@@ -13,6 +13,12 @@ function App() {
       draft[column].push(newItem);
     });
   };
+
+  const deleteItem = (column, id) => {
+    setState(draft => {
+      draft[column] = draft[column].filter(item => item.id !== id);
+    });
+  };
   
   return (
     <div className="container py-10">
@@ -22,17 +28,19 @@ function App() {
           title="Todo"
           items={state.todo}
           onAddItem={(item) => addItem("todo", item)}
+          onDeleteItem={(id) => deleteItem("todo", id)}
         />
         <Column
           title="In Progress"
-          items={[
-            {
-              id: "2",
-              title: "Working on UI",
-              status: "in-progress",
-              isEditing: false,
-            },
-          ]}
+          items={state.inProgress}
+          onAddItem={(item) => addItem("inProgress", item)}
+          onDeleteItem={(id) => deleteItem("inProgress", id)}
+        />
+         <Column
+          title="Completed"
+          items={state.completed}
+          onAddItem={(item) => addItem("completed", item)}
+          onDeleteItem={(id) => deleteItem("completed", id)}
         />
       </div>
     </div>

@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { TaskItem } from "./TaskItem";
 import { useState } from "react";
 
-export function Column({ title, items, onAddItem, onDeleteItem}) {
+export function Column({ title, items, onAddItem, onDeleteItem, onEditItem, onStatusChange }) {
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState("");
 
@@ -55,6 +55,8 @@ export function Column({ title, items, onAddItem, onDeleteItem}) {
               key={item.id}
               item={item}
               onDelete={() => onDeleteItem(item.id)}
+              onEdit={(newTitle) => onEditItem(item.id, newTitle)}
+              onStatusChange={(status) => onStatusChange(item.id, status)}
             />
           ))}
         </ul>

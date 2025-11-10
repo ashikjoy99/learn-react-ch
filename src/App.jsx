@@ -14,7 +14,7 @@ function App() {
         id: `${Date.now()}_${Math.random()}`,
         title: item,
         status: status,
-        isEditing: false,
+        isEditing: true,
       });
     });
   }
@@ -44,6 +44,16 @@ function App() {
     });
   }
 
+  function editItem(itemId, arrayTitle, newTitle) {
+    setState((draft) => {
+      const arr = draft[arrayTitle];
+      const idx = arr.findIndex((item) => item.id === itemId);
+      if (idx !== -1) {
+        arr[idx].title = newTitle;
+      }
+    });
+  }
+
   return (
     <div className="container py-10">
       <h1 className="text-2xl font-semibold mb-6">Task Board</h1>
@@ -56,6 +66,7 @@ function App() {
           onChangeStatus={(itemId, newStatus) =>
             changeItemStatus(itemId, "todo", newStatus)
           }
+          onEditItem={(itemId, newTitle) => editItem(itemId, "todo", newTitle)}
         />
 
         <Column
@@ -66,6 +77,9 @@ function App() {
           onChangeStatus={(itemId, newStatus) =>
             changeItemStatus(itemId, "inProgress", newStatus)
           }
+          onEditItem={(itemId, newTitle) =>
+            editItem(itemId, "inProgress", newTitle)
+          }
         />
         <Column
           title="Completed"
@@ -74,6 +88,9 @@ function App() {
           onRemoveItem={(itemId) => removeItem(itemId, "completed")}
           onChangeStatus={(itemId, newStatus) =>
             changeItemStatus(itemId, "completed", newStatus)
+          }
+          onEditItem={(itemId, newTitle) =>
+            editItem(itemId, "completed", newTitle)
           }
         />
       </div>

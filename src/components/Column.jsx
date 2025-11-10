@@ -10,6 +10,7 @@ export function Column({
   onAddItem,
   onRemoveItem,
   onChangeStatus,
+  onEditItem,
 }) {
   const [newItem, setNewItem] = useImmer("");
   const [search, setSearch] = useImmer("");
@@ -52,6 +53,7 @@ export function Column({
               item={item}
               onRemoveItem={(itemId) => onRemoveItem(itemId)}
               onChangeStatus={onChangeStatus}
+              onEditItem={onEditItem}
             />
           ))}
         </ul>

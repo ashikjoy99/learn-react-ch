@@ -7,26 +7,91 @@ function App() {
     inProgress: [],
     completed: [],
   });
+
+  function addItem(item, arrayTitle, status) {
+    setState((draft) => {
+      draft[arrayTitle].push({
+        id: `${Date.now()}_${Math.random()}`,
+        title: item,
+        status: status,
+        isEditing: true,
+      });
+    });
+  }
+
+  function removeItem(itemId, arrayTitle) {
+    setState((draft) => {
+      draft[arrayTitle] = draft[arrayTitle].filter(
+        (item) => item.id !== itemId
+      );
+    });
+  }
+
+  function changeItemStatus(itemId, fromArray, toStatus) {
+    setState((draft) => {
+      const itemIndex = draft[fromArray].findIndex(
+        (item) => item.id === itemId
+      );
+      if (itemIndex === -1) return;
+
+      const [item] = draft[fromArray].splice(itemIndex, 1);
+      item.status = toStatus;
+      let toArray = "";
+      if (toStatus === "todo") toArray = "todo";
+      else if (toStatus === "in-progress") toArray = "inProgress";
+      else if (toStatus === "completed") toArray = "completed";
+      draft[toArray].push(item);
+    });
+  }
+
+  function editItem(itemId, arrayTitle, newTitle) {
+    setState((draft) => {
+      const arr = draft[arrayTitle];
+      const idx = arr.findIndex((item) => item.id === itemId);
+      if (idx !== -1) {
+        arr[idx].title = newTitle;
+      }
+    });
+  }
+
   return (
     <div className="container py-10">
       <h1 className="text-2xl font-semibold mb-6">Task Board</h1>
       <div className="grid gap-6 md:grid-cols-3">
         <Column
           title="Todo"
-          items={[
-            { id: "1", title: "Sample todo", status: "todo", isEditing: false },
-          ]}
+          items={state.todo}
+          onAddItem={(newItem) => addItem(newItem, "todo", "todo")}
+          onRemoveItem={(itemId) => removeItem(itemId, "todo")}
+          onChangeStatus={(itemId, newStatus) =>
+            changeItemStatus(itemId, "todo", newStatus)
+          }
+          onEditItem={(itemId, newTitle) => editItem(itemId, "todo", newTitle)}
         />
+
         <Column
           title="In Progress"
-          items={[
-            {
-              id: "2",
-              title: "Working on UI",
-              status: "in-progress",
-              isEditing: false,
-            },
-          ]}
+          items={state.inProgress}
+          onAddItem={(newItem) => addItem(newItem, "inProgress", "in-progress")}
+          onRemoveItem={(itemId) => removeItem(itemId, "inProgress")}
+          onChangeStatus={(itemId, newStatus) =>
+            changeItemStatus(itemId, "inProgress", newStatus)
+          }
+          onEditItem={(itemId, newTitle) =>
+            editItem(itemId, "inProgress", newTitle)
+          }
+        />
+        <Column
+          title="Completed"
+          items={state.completed}
+          onAddItem={(newItem) => addItem(newItem, "completed", "completed")}
+          onRemoveItem={(itemId) => removeItem(itemId, "completed")}
+          onChangeStatus={(itemId, newStatus) =>
+            changeItemStatus(itemId, "completed", newStatus)
+          }
+          onEditItem={(itemId, newTitle) =>
+            editItem(itemId, "completed", newTitle)
+          }
         />
       </div>
     </div>

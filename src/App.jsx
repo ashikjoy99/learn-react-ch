@@ -1,5 +1,6 @@
 import { useImmer } from "use-immer";
 import { Column } from "./components/Column";
+import { Link } from "react-router";
 
 function App() {
   const [state, setState] = useImmer({
@@ -48,6 +49,7 @@ function App() {
   return (
     <div className="container py-10">
       <h1 className="text-2xl font-semibold mb-6">Task Board</h1>
+      <h3><Link to="/">Home</Link></h3>
       <div className="grid gap-6 md:grid-cols-3">
         <Column
           title="Todo"

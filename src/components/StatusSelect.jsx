@@ -6,11 +6,9 @@ import {
   SelectValue,
 } from "./ui/select";
 
-export function StatusSelect({ value, onSelectChange }) {
+export function StatusSelect({ value, onChange }) {
   return (
-    <Select
-      onValueChange={(newValue) => onSelectChange(value, newValue)}
-    >
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-[160px]">
         <SelectValue placeholder="Select status" />
       </SelectTrigger>

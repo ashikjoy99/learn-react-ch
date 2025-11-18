@@ -2,70 +2,47 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { StatusSelect } from "./StatusSelect";
 import { cn } from "../lib/utils";
-
 import { useState } from "react";
 
-export function TaskItem({ item, onRemoveItem, onChangeStatus, onEditItem }) {
+export function TaskItem({ item, onDelete, onEdit, onStatusChange }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState(item.title);
+  const [value, setValue] = useState(item.title);
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setEditValue(item.title);
-  };
-
-  const handleSaveClick = () => {
-    if (onEditItem) {
-      onEditItem(item.id, editValue);
-    }
+  const saveEdit = () => {
+    if (value.trim() === "") return;
+    onEdit(value);
     setIsEditing(false);
-  };
-
-  const handleCancelClick = () => {
-    setIsEditing(false);
-    setEditValue(item.title);
   };
 
   return (
-    <li className="flex items-center gap-2 w-full">
+    <li className="flex items-center gap-2">
       {isEditing ? (
-        <Input
-          value={editValue}
-          onChange={(e) => setEditValue(e.target.value)}
-          className="flex-1 min-w-[120px] px-3 py-2"
+        <input
+          className="flex-1 px-3 py-2 rounded-md border"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && saveEdit()}
           autoFocus
         />
       ) : (
-        <div
-          className={cn(
-            "flex-1 text-left px-3 py-2 rounded-md border bg-white min-w-[120px]"
-          )}
+        <button
+          className="flex-1 text-left px-3 py-2 rounded-md border"
+          onClick={() => setIsEditing(true)}
         >
           {item.title}
-        </div>
+        </button>
       )}
 
       <StatusSelect
         value={item.status}
-        onChange={(newStatus) => onChangeStatus(item.id, newStatus)}
+        onChange={(status) => onStatusChange(status)}
       />
+
       {isEditing ? (
-        <>
-          <Button onClick={handleSaveClick} variant="ghost">
-            Save
-          </Button>
-          <Button onClick={handleCancelClick} variant="ghost">
-            Cancel
-          </Button>
-        </>
+        <Button variant="ghost" onClick={saveEdit}>Save</Button>
       ) : (
-        <Button onClick={handleEditClick} variant="ghost">
-          Edit
-        </Button>
+        <Button variant="ghost" onClick={onDelete}>Delete</Button>
       )}
-      <Button onClick={() => onRemoveItem(item.id)} variant="ghost">
-        Delete
-      </Button>
     </li>
   );
 }

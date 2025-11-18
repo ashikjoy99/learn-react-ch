@@ -1,5 +1,12 @@
 import { useImmer } from "use-immer";
 import { Column } from "./components/Column";
+import './index.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { Users } from './components/Users.jsx';
+import { Home } from './components/Home.jsx';
+import { Todo } from './components/Todo.jsx';
+import { Detail } from './components/Detail.jsx';
 
 function App() {
   const [state, setState] = useImmer({
@@ -54,47 +61,57 @@ function App() {
     });
   }
 
-  return (
-    <div className="container py-10">
-      <h1 className="text-2xl font-semibold mb-6">Task Board</h1>
-      <div className="grid gap-6 md:grid-cols-3">
-        <Column
-          title="Todo"
-          items={state.todo}
-          onAddItem={(newItem) => addItem(newItem, "todo", "todo")}
-          onRemoveItem={(itemId) => removeItem(itemId, "todo")}
-          onChangeStatus={(itemId, newStatus) =>
-            changeItemStatus(itemId, "todo", newStatus)
-          }
-          onEditItem={(itemId, newTitle) => editItem(itemId, "todo", newTitle)}
-        />
+  // return (
+  //   <div className="container py-10">
+  //     <h1 className="text-2xl font-semibold mb-6">Task Board</h1>
+  //     <div className="grid gap-6 md:grid-cols-3">
+  //       <Column
+  //         title="Todo"
+  //         items={state.todo}
+  //         onAddItem={(newItem) => addItem(newItem, "todo", "todo")}
+  //         onRemoveItem={(itemId) => removeItem(itemId, "todo")}
+  //         onChangeStatus={(itemId, newStatus) =>
+  //           changeItemStatus(itemId, "todo", newStatus)
+  //         }
+  //         onEditItem={(itemId, newTitle) => editItem(itemId, "todo", newTitle)}
+  //       />
 
-        <Column
-          title="In Progress"
-          items={state.inProgress}
-          onAddItem={(newItem) => addItem(newItem, "inProgress", "in-progress")}
-          onRemoveItem={(itemId) => removeItem(itemId, "inProgress")}
-          onChangeStatus={(itemId, newStatus) =>
-            changeItemStatus(itemId, "inProgress", newStatus)
-          }
-          onEditItem={(itemId, newTitle) =>
-            editItem(itemId, "inProgress", newTitle)
-          }
-        />
-        <Column
-          title="Completed"
-          items={state.completed}
-          onAddItem={(newItem) => addItem(newItem, "completed", "completed")}
-          onRemoveItem={(itemId) => removeItem(itemId, "completed")}
-          onChangeStatus={(itemId, newStatus) =>
-            changeItemStatus(itemId, "completed", newStatus)
-          }
-          onEditItem={(itemId, newTitle) =>
-            editItem(itemId, "completed", newTitle)
-          }
-        />
-      </div>
-    </div>
+  //       <Column
+  //         title="In Progress"
+  //         items={state.inProgress}
+  //         onAddItem={(newItem) => addItem(newItem, "inProgress", "in-progress")}
+  //         onRemoveItem={(itemId) => removeItem(itemId, "inProgress")}
+  //         onChangeStatus={(itemId, newStatus) =>
+  //           changeItemStatus(itemId, "inProgress", newStatus)
+  //         }
+  //         onEditItem={(itemId, newTitle) =>
+  //           editItem(itemId, "inProgress", newTitle)
+  //         }
+  //       />
+  //       <Column
+  //         title="Completed"
+  //         items={state.completed}
+  //         onAddItem={(newItem) => addItem(newItem, "completed", "completed")}
+  //         onRemoveItem={(itemId) => removeItem(itemId, "completed")}
+  //         onChangeStatus={(itemId, newStatus) =>
+  //           changeItemStatus(itemId, "completed", newStatus)
+  //         }
+  //         onEditItem={(itemId, newTitle) =>
+  //           editItem(itemId, "completed", newTitle)
+  //         }
+  //       />
+  //     </div>
+  //   </div>
+  // );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="users" element={<Users />} />
+        <Route path="todo" element={<Todo />} /> 
+        <Route path="users/:id" element={<Detail />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
